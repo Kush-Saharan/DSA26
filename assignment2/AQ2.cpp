@@ -1,7 +1,8 @@
 /*
-Given the arrival and departure times of all trains reaching a railway station on the same day, write a program to
-determine the minimum number of platforms required so that no train has to wait for a platform. For each train, the
-arrival time is always different from its departure time, but the arrival time of one train may be equal to the departure
+Given the arrival and departure times of all trains reaching a railway station on the same day, 
+write a program to determine the minimum number of platforms required so that no train has to wait for a platform.
+For each train, the arrival time is always different from its departure time, 
+but the arrival time of one train may be equal to the departure
 time of another train. At any given instant, a single platform cannot be used simultaneously for the departure of one
 train and the arrival of another train; therefore, in such cases, separate platforms must be allocated. [Minimum
 Platforms | Practice Problems]
@@ -18,28 +19,51 @@ Minimum number of platforms required = 3
 #include <algorithm>
 using namespace std;
 
-int main() {
+// Solution 1
+int main(){
     vector<int> AT={900, 910, 920, 1100, 1120};
     vector<int> DT={940, 1200, 950, 1130, 1140};
+    vector<int> Plat(1, 0);
 
-    sort(AT.begin(), AT.end());
-    sort(DT.begin(), DT.end());
-
-    int i=0, j=0;
-    int platforms=0, maxPlatforms=0;
-
-    while (i<AT.size() && j<DT.size()) {
-        if(AT[i]<=DT[j]) {
-            platforms++;
-            maxPlatforms=max(maxPlatforms, platforms);
-            i++;
+    for(int i=0; i<AT.size(); i++){
+        bool found=false;
+        for(int j=0; j<Plat.size(); j++){
+            if(Plat[j]<AT[i]){
+                Plat[j]=DT[i];
+                found=true;
+                break;
+            }
         }
-        else{
-            platforms--;
-            j++;
+        if(!found){
+            Plat.push_back(DT[i]);
         }
     }
-    cout<<"Minimum number of platforms required = " << maxPlatforms << endl;
-
-    return 0;
+    cout<<"Minimum number of platforms required: "<<Plat.size()<<endl;
 }
+
+// Solution 2
+// int main() {
+//     vector<int> AT={900, 910, 920, 1100, 1120};
+//     vector<int> DT={940, 1200, 950, 1130, 1140};
+
+//     sort(AT.begin(), AT.end());
+//     sort(DT.begin(), DT.end());
+
+//     int i=0, j=0;
+//     int platforms=0, maxPlatforms=0;
+
+//     while (i<AT.size() && j<DT.size()) {
+//         if(AT[i]<=DT[j]) {
+//             platforms++;
+//             maxPlatforms=max(maxPlatforms, platforms);
+//             i++;
+//         }
+//         else{
+//             platforms--;
+//             j++;
+//         }
+//     }
+//     cout<<"Minimum number of platforms required = " << maxPlatforms << endl;
+
+//     return 0;
+// }
